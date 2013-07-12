@@ -11,7 +11,6 @@ var parseTime = function (string) {
   "use strict";
   var i,
     re,
-    first,
     lang,
     encoded,
     timedif,
@@ -135,111 +134,47 @@ var parseTime = function (string) {
           '\\.' : ''
         }
       }
+    },
+    adWordsToRegex = function (fillfoo, first) {
+      var returnval = '', i;
+      for (i in words[lang][fillfoo]) {
+        if (first === false) {
+          returnval += '|';
+        } else {
+          first = false;
+        }
+        returnval += i;
+      }
+      return returnval;
     };
 
   string = ' ' + string + ' ';
   for (lang in words) {
     regex[lang] = '((';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('fillfoo', true);
     regex[lang] += ')+(';
-    for (i in words[lang].fillwords) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('fillwords', true);
     regex[lang] += ')*(';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
+    regex[lang] += adWordsToRegex('fillfoo', true);
     regex[lang] += ')*(\\d+';
-    for (i in words[lang].numbers) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('numbers', false);
     regex[lang] += ')+(';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('fillfoo', true);
     regex[lang] += ')*((';
-    for (i in words[lang].unit) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('unit', true);
     regex[lang] += ')(';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
+    regex[lang] += adWordsToRegex('fillfoo', true);
     regex[lang] += ')?';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('fillfoo', false);
     regex[lang] += ')*(';
-    for (i in words[lang].fillwords) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
-    first = true;
+    regex[lang] += adWordsToRegex('fillwords', true);
     regex[lang] += ')*(';
-    for (i in words[lang].fillfoo) {
-      if (first === false) {
-        regex[lang] += '|';
-      } else {
-        first = false;
-      }
-      regex[lang] += i;
-    }
+    regex[lang] += adWordsToRegex('fillfoo', true);
     regex[lang] += ')+)';
   }
 
   for (lang in regex) {
+    console.log(regex[lang]);
     re = new RegExp(regex[lang], "i");
     encoded = re.exec(string);
     timedif = 0;
