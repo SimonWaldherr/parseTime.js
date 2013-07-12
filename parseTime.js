@@ -9,8 +9,7 @@
 
 var parseTime = function (string) {
   "use strict";
-  var i,
-    re,
+  var re,
     lang,
     encoded,
     timedif,
@@ -24,6 +23,7 @@ var parseTime = function (string) {
           'ein' : 1,
           'zwei' : 2,
           'drei' : 3,
+          'ein paar' : 3.5,
           'vier' : 4,
           'fünf' : 5,
           'sechs' : 6,
@@ -83,6 +83,7 @@ var parseTime = function (string) {
           'one' : 1,
           'two' : 2,
           'three' : 3,
+          'a few' : 3.5,
           'four' : 4,
           'five' : 5,
           'six' : 6,
@@ -138,55 +139,60 @@ var parseTime = function (string) {
     adWordsToRegex = function (fillfoo, first) {
       var returnval = '', i;
       for (i in words[lang][fillfoo]) {
-        if (first === false) {
-          returnval += '|';
-        } else {
-          first = false;
+        if (words[lang][fillfoo][i] !== undefined) {
+          if (first === false) {
+            returnval += '|';
+          } else {
+            first = false;
+          }
+          returnval += i;
         }
-        returnval += i;
       }
       return returnval;
     };
 
   string = ' ' + string + ' ';
   for (lang in words) {
-    regex[lang] = '((';
-    regex[lang] += adWordsToRegex('fillfoo', true);
-    regex[lang] += ')+(';
-    regex[lang] += adWordsToRegex('fillwords', true);
-    regex[lang] += ')*(';
-    regex[lang] += adWordsToRegex('fillfoo', true);
-    regex[lang] += ')*(\\d+';
-    regex[lang] += adWordsToRegex('numbers', false);
-    regex[lang] += ')+(';
-    regex[lang] += adWordsToRegex('fillfoo', true);
-    regex[lang] += ')*((';
-    regex[lang] += adWordsToRegex('unit', true);
-    regex[lang] += ')(';
-    regex[lang] += adWordsToRegex('fillfoo', true);
-    regex[lang] += ')?';
-    regex[lang] += adWordsToRegex('fillfoo', false);
-    regex[lang] += ')*(';
-    regex[lang] += adWordsToRegex('fillwords', true);
-    regex[lang] += ')*(';
-    regex[lang] += adWordsToRegex('fillfoo', true);
-    regex[lang] += ')+)';
+    if (words[lang] !== undefined) {
+      regex[lang] = '((';
+      regex[lang] += adWordsToRegex('fillfoo', true);
+      regex[lang] += ')+(';
+      regex[lang] += adWordsToRegex('fillwords', true);
+      regex[lang] += ')*(';
+      regex[lang] += adWordsToRegex('fillfoo', true);
+      regex[lang] += ')*(\\d+';
+      regex[lang] += adWordsToRegex('numbers', false);
+      regex[lang] += ')+(';
+      regex[lang] += adWordsToRegex('fillfoo', true);
+      regex[lang] += ')*((';
+      regex[lang] += adWordsToRegex('unit', true);
+      regex[lang] += ')(';
+      regex[lang] += adWordsToRegex('fillfoo', true);
+      regex[lang] += ')?';
+      regex[lang] += adWordsToRegex('fillfoo', false);
+      regex[lang] += ')*(';
+      regex[lang] += adWordsToRegex('fillwords', true);
+      regex[lang] += ')*(';
+      regex[lang] += adWordsToRegex('fillfoo', true);
+      regex[lang] += ')+)';
+    }
   }
 
   for (lang in regex) {
-    console.log(regex[lang]);
-    re = new RegExp(regex[lang], "i");
-    encoded = re.exec(string);
-    timedif = 0;
-    if (encoded !== null) {
-      if (encoded[8] !== undefined) {
-        integer = (isNaN(parseInt(encoded[5], 10))) ? words[lang].numbers[encoded[5]] : parseInt(encoded[5], 10);
-        unit = words[lang].unit[encoded[8].toLowerCase()];
-        timedif = integer * unit;
-        if (encoded.indexOf(words[lang].fillwords[0]) !== -1) {
-          timedif = (0 - timedif);
+    if (regex[lang] !== undefined) {
+      re = new RegExp(regex[lang], "i");
+      encoded = re.exec(string);
+      timedif = 0;
+      if (encoded !== null) {
+        if (encoded[8] !== undefined) {
+          integer = (isNaN(parseInt(encoded[5], 10))) ? words[lang].numbers[encoded[5]] : parseInt(encoded[5], 10);
+          unit = words[lang].unit[encoded[8].toLowerCase()];
+          timedif = integer * unit;
+          if (encoded.indexOf(words[lang].fillwords[0]) !== -1) {
+            timedif = (0 - timedif);
+          }
+          return JSON.stringify([encoded, timedif]);
         }
-        return JSON.stringify([encoded, timedif]);
       }
     }
   }
