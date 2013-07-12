@@ -1,11 +1,11 @@
 #parseTime.js
 
-converts strings like " 5 days ago " to integers with the time in seconds in two languages (en, de)
+convert strings like "five days ago" to an integer (with time in seconds) in two languages (en, de)
 
 ##about
 
 License:   MIT  
-Version: 0.1.0  
+Version: 0.1.2  
 Date:  07.2013  
 
 ##demo
