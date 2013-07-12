@@ -1,6 +1,7 @@
 #parseTime.js
 
-convert strings like "five days ago" to an integer (with time in seconds) in two languages (en, de)
+convert strings like "five days ago" to an integer (with time in seconds) in two languages (en, de)  
+*coders who like parseTime.js maybe also like [disTime.js](https://github.com/SimonWaldherr/disTime.js)*
 
 ##about
 
