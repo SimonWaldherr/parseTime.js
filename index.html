@@ -17,9 +17,25 @@
         }
       }
     };
+    function demo () {
+      var ret = '',
+        ele = document.getElementById('ret'),
+        inp = document.getElementById('inp').value,
+        now = new Date().getTime(),
+        retvalue = parseTime(inp, now);
+        if (retvalue !== undefined) {
+          ret += JSON.stringify(retvalue);
+          ret += '<br/> ' + new Date(retvalue.absolute).toUTCString();
+        } else {
+          ret += 'not parsable';
+        }
+        ele.innerHTML = ret;
+    }
   </script>
 </head>
 <body>
+  <input id="inp" onkeyup="demo()" type="text"><p id="ret"></p>
+  <hr/>
   <p><span>i was in Berlin one month ago<span></p>
   <p><span>i was in Berlin five day ago<span></p>
   <p><span>i go to Munich in two weeks<span></p>
