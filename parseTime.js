@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.3  *
+ *  Version 0.1.4  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -189,18 +189,33 @@ var parseTime = function (string, now) {
       regex[lang] += ')+)';
     }
   }
+  // [0]  : unimportant
+  // [1]  : unimportant
+  // [2]  : unimportant
+  // [3]  : fillwords (mostly future)
+  // [4]  : unimportant
+  // [5]  : numbers (string or int)
+  // [6]  : unimportant
+  // [7]  : unit (multiple)
+  // [8]  : unit
+  // [9]  : fillwords (mostly past)
+  // [10] : unimportant
 
   for (lang in regex) {
+    // if regex is builded
     if (regex[lang] !== undefined) {
       re = new RegExp(regex[lang], "i");
       encoded = re.exec(string);
       timedif = 0;
+      // if regex matches
       if (encoded !== null) {
+        // if unit matches
         if (encoded[8] !== undefined) {
           integer = (isNaN(parseInt(encoded[5], 10))) ? words[lang].numbers[encoded[5]] : parseInt(encoded[5], 10);
           unit = words[lang].unit[encoded[8].toLowerCase()];
           timedif = integer * unit;
-          if (encoded.indexOf(words[lang].fillwords[0]) !== -1) {
+          // if fillwords can be found in match-array
+          if (encoded.indexOf(Object.keys(words[lang].fillwords)[0]) !== -1) {
             parsed = -timedif;
             return {
               'absolute': (now - timedif),
