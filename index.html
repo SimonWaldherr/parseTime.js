@@ -13,6 +13,7 @@
           eles[i].innerHTML += '<br/> ' + JSON.stringify(retvalue);
           eles[i].innerHTML += '<br/> ' + new Date(retvalue.absolute).toUTCString();
         } else {
+          eles[i].style.color = 'red';
           eles[i].innerHTML += '<br/> not parsable';
         }
       }
@@ -23,19 +24,21 @@
         inp = document.getElementById('inp').value,
         now = new Date().getTime(),
         retvalue = parseTime(inp, now);
-        if (retvalue !== undefined) {
-          ret += JSON.stringify(retvalue);
-          ret += '<br/> ' + new Date(retvalue.absolute).toUTCString();
-        } else {
-          ret += 'not parsable';
-        }
-        ele.innerHTML = ret;
+      if (retvalue !== undefined) {
+        ret += JSON.stringify(retvalue);
+        ret += '<br/> ' + new Date(retvalue.absolute).toUTCString();
+        ele.style.color = 'black';
+      } else {
+        ret += 'not parsable';
+        ele.style.color = 'red';
+      }
+      ele.innerHTML = ret;
     }
   </script>
 </head>
 <body>
   <h1>parseTime.js</h1>
-  <h2>Version: 0.1.5</h2>
+  <h2>Version: 0.1.6</h2>
   <h2>License: MIT</h2>
   <br/>
   <input id="inp" onkeyup="demo()" type="text"><p id="ret"></p>
