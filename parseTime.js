@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.4  *
+ *  Version 0.1.5  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -15,8 +15,11 @@ var parseTime = function (string, now) {
     timedif,
     integer,
     unit,
+    word,
     words,
     parsed,
+    hhmmss,
+    date = {},
     regex = {},
     adWordsToRegex = function (fillfoo, first) {
       var returnval = '', i;
@@ -77,6 +80,13 @@ var parseTime = function (string, now) {
         'hundert' : 100,
         'tausend' : 1000,
         'million' : 1000000
+      },
+      countable: {
+        'vorgestern' : -172800000,
+        'gestern' : -86400000,
+        'heute' : 1,
+        'übermorgen' : 172800000,
+        'morgen' : 86400000
       },
       unit: {
         'millisekunde' : 1,
@@ -143,12 +153,19 @@ var parseTime = function (string, now) {
         'second' : 1000,
         'minute' : 60000,
         'hour' : 3600000,
-        'day' : 8640000,
+        'day' : 86400000,
         'week' : 604800000,
         'month' : 2592000000,
         'quarter' : 7776000000,
         'year' : 31536000000,
         'decade' : 315360000000
+      },
+      countable: {
+        'before yesterday' : -172800000,
+        'yesterday' : -86400000,
+        'today' : 1,
+        'day after tomorrow' : 172800000,
+        'tomorrow' : 86400000
       },
       fillwords: {
         'ago' : '-',
@@ -162,6 +179,55 @@ var parseTime = function (string, now) {
       }
     }
   };
+  hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
+  if (hhmmss !== null) {
+    date.day = hhmmss[2];
+    date.month = hhmmss[3];
+    date.year = hhmmss[4];
+    date.hour = hhmmss[5];
+    date.minute = hhmmss[6];
+    date.second = hhmmss[7];
+  } else {
+    hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( Uhr| o\'clock)))/.exec(string);
+    if (hhmmss !== null) {
+      date.countable = hhmmss[0].toLowerCase();
+      date.hour = hhmmss[3];
+      date.minute = hhmmss[6] !== undefined ? hhmmss[6] : 0;
+      date.second = hhmmss[8] !== undefined ? hhmmss[8] : 0;
+    }
+  }
+  if (date.hour !== undefined) {
+    for (lang in words) {
+      if (words[lang] !== undefined) {
+        for (word in words[lang].countable) {
+          if (words[lang].countable[word] !== undefined) {
+            if (date.countable !== undefined) {
+              if (date.countable.indexOf(word) !== -1 && date.countableint === undefined) {
+                date.countableint = words[lang].countable[word];
+              }
+            }
+          }
+        }
+      }
+    }
+    if (date.countableint !== undefined) {
+      date.now = new Date(Date.now() + date.countableint).toString();
+    } else {
+      date.now = new Date().toString();
+    }
+    date.today = /(([A-Za-z0-9, ]+) \d\d:\d\d:\d\d ([A-Z]+))/.exec(date.now);
+    date.timezone = date.today[3];
+    if (date.year === undefined) {
+      date.today = date.today[2];
+    } else {
+      date.today = date.year + '-' + date.month + '-' + date.day;
+    }
+    date = new Date(date.today + ' ' + date.hour + ':' + date.minute + ':' + date.second + ' ' + date.timezone);
+    return {
+      'absolute': date.getTime(),
+      'relative': date.getTime() - now
+    };
+  }
 
   string = ' ' + string + ' ';
   for (lang in words) {

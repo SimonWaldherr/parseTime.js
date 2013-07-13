@@ -6,7 +6,7 @@ convert strings like "five days ago" to an integer (with time in seconds) in two
 ##about
 
 License:   MIT  
-Version: 0.1.4  
+Version: 0.1.5  
 Date:  07.2013  
 
 ##demo
