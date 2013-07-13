@@ -13,6 +13,15 @@ Date:  07.2013
 
 Test this code on the associated github page [simonwaldherr.github.com/parseTime.js/](http://simonwaldherr.github.com/parseTime.js/).
 
+##version
+
+* 0.1.5) parse DIN1355-1 and strings like "tomorrow"
+* 0.1.4) unit indexOf fix
+* 0.1.3) parse RFC2822 and ISO8601
+* 0.1.2) smaller valid code
+* 0.1.1) beautified
+* 0.1.0) Init Commit
+
 ##contact
 
 Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de) or on [Twitter](http://twitter.com/simonwaldherr). This software will be continually developed. Suggestions and tips are always welcome.
