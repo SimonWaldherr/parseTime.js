@@ -22,3 +22,62 @@ p span {
   font-size: 130% !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
+
+body * {
+  font-family: Menlo, Consolas, Monaco, "Lucida Console", monospace;
+}
+
+body {
+  background-image: url('./bg.png'); /* by Subtle Patterns (http://subtlepatterns.com/) licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. */
+}
+
+.parsedBox, #header, #footer {
+  width: 80%;
+  min-width: 600px;
+  background-color:white;
+  box-shadow: 0px 0px 12px 0px #000000;
+  -webkit-box-shadow: 0px 0px 12px 0px #000000;
+  margin: 25px auto;
+  padding: 5px 25px 45px 25px;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.parsedBox {
+  padding-top: 25px;
+}
+
+#footer {
+  margin-top: 40px;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+@media only screen and
+(min-width:1380px) {
+
+  #parsedContainer {
+    display: inline-block;
+    left: 8.3%;
+    position: relative;
+    width: 83.5%;
+    min-width: 600px;
+  }
+  
+  div#parsedContainer p {
+    width: 47%;
+    position: relative;
+    margin: 15px;
+    min-width: 488px;
+    min-height: 65px;
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  div#parsedContainer p:nth-child(even) {
+    float: left;
+  }
+  div#parsedContainer p:nth-child(odd) {
+    float: right;
+  }
+}

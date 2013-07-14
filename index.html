@@ -4,66 +4,47 @@
   <title>parseTime</title>
   <link href="style.css" rel="stylesheet" type="text/css">
   <script src="parseTime.js" type="text/javascript"></script>
-  <script>
-    window.onload = function () {
-      var i, retvalue, eles = document.getElementsByTagName('p'), now = new Date().getTime();
-      for (i=0; i < eles.length; i++) {
-        retvalue = parseTime(eles[i].textContent, now);
-        if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
-          eles[i].innerHTML += '<br/> ' + JSON.stringify(retvalue);
-          eles[i].innerHTML += '<br/> ' + new Date(retvalue.absolute).toUTCString();
-        } else {
-          eles[i].style.color = 'red';
-          eles[i].innerHTML += '<br/> not parsable';
-        }
-      }
-    };
-    function demo () {
-      var ret = '',
-        ele = document.getElementById('ret'),
-        inp = document.getElementById('inp').value,
-        now = new Date().getTime(),
-        retvalue = parseTime(inp, now);
-      if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
-        ret += JSON.stringify(retvalue);
-        ret += '<br/> ' + new Date(retvalue.absolute).toUTCString();
-        ele.style.color = 'black';
-      } else {
-        ret += 'not parsable';
-        ele.style.color = 'red';
-      }
-      ele.innerHTML = ret;
-    }
-  </script>
+  <script src="script.js" type="text/javascript"></script>
 </head>
 <body>
-  <h1>parseTime.js</h1>
-  <h2>Version: 0.1.7</h2>
-  <h2>License: MIT</h2>
-  <br/>
-  <input id="inp" onkeyup="demo()" type="text"><p id="ret"></p>
-  <hr/>
-  <p><span>now<span></p>
-  <p><span>i was in Berlin one month ago<span></p>
-  <p><span>i was in Berlin five days ago<span></p>
-  <p><span>i go to Munich in two weeks<span></p>
-  <p><span>you where in london for four days<span></p>
-  <p><span>it will be ready in 2 months<span></p>
-  <p><span>it will be ready in 23 weeks from now<span></p>
-  <p><span>this is a text without time informations<span></p>
-  <p><span>in zehn Tagen<span></p>
-  <p><span>vor einer Woche<span></p>
-  <p><span>Hier steht keine Zeitangabe<span></p>
-  <p><span>the $event is in a few days<span></p>
-  <p><span>2012-07-13 13:37:00<span></p>
-  <p><span>2013-07-13 13:37:00<span></p>
-  <p><span>2014-07-13 13:37:00<span></p>
-  <p><span>2014-08-13<span></p>
-  <p><span>13:37:00<span></p>
-  <p><span>30.01.2013<span></p>
-  <p><span>30.01.2013 13:37:59<span></p>
-  <p><span>2013-01-29 13:37:59<span></p>
-  <p><span>übermorgen um 16 Uhr<span></p>
-  <p><span>yesterday 10 o'clock<span></p>
+  <div id="header">
+    <h1>parseTime.js</h1>
+    <h2>Version: 0.1.8</h2>
+    <h2>License: MIT</h2>
+  </div>
+  <div class="parsedBox">
+    <input id="inp" onkeyup="demo()" type="text"><p id="ret"></p>
+  </div>
+  <div id="parsedContainer">
+    <p class="parsedBox"><span>now<span></p>
+    <p class="parsedBox"><span>morgen abends</span> (not supported now)</p>
+    <p class="parsedBox"><span>am 17.01.2014 abends</span></p>
+    <p class="parsedBox"><span>am sechsten Juni</span> (not supported now)</p>
+    <p class="parsedBox"><span>i was in Berlin one month ago</span></p>
+    <p class="parsedBox"><span>i was in Berlin five days ago</span></p>
+    <p class="parsedBox"><span>i go to Munich in two weeks</span></p>
+    <p class="parsedBox"><span>you where in london for four days</span></p>
+    <p class="parsedBox"><span>it will be ready in 2 months</span></p>
+    <p class="parsedBox"><span>it will be ready in 23 weeks from now</span></p>
+    <p class="parsedBox"><span>this is a text without time informations</span><br/>(contain no date/time info)</p>
+    <p class="parsedBox"><span>in zehn Tagen</span></p>
+    <p class="parsedBox"><span>vor einer Woche</span></p>
+    <p class="parsedBox"><span>Hier steht keine Zeitangabe</span><br/>(contain no date/time info)</p>
+    <p class="parsedBox"><span>the $event is in a few days</span></p>
+    <p class="parsedBox"><span>2012-11-31 13:37:00</span></p>
+    <p class="parsedBox"><span>2012-07-13 13:37:00</span></p>
+    <p class="parsedBox"><span>2013-07-13 13:37:00</span></p>
+    <p class="parsedBox"><span>2014-07-13 13:37:00</span></p>
+    <p class="parsedBox"><span>2014-08-13</span></p>
+    <p class="parsedBox"><span>13:37:00</span></p>
+    <p class="parsedBox"><span>30.01.2013</span></p>
+    <p class="parsedBox"><span>30.01.2013 13:37:59</span></p>
+    <p class="parsedBox"><span>2013-01-29 13:37:59</span></p>
+    <p class="parsedBox"><span>übermorgen um 16 Uhr</span></p>
+    <p class="parsedBox"><span>yesterday 10 o'clock</span></p>
+  </div>
+  <div id="footer">
+    parseTime.js | MIT license | 0.1.8 | <a href="https://github.com/SimonWaldherr/parseTime.js">@GitHub</a>
+  </div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.7  *
+ *  Version 0.1.8  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -97,6 +97,18 @@ var parseTime = function (string, now) {
         'übermorgen' : 172800000,
         'morgen' : 86400000
       },
+      daytime: {
+        'morgendämmerung': '04:00',
+        'tagesanbruch': '04:00',
+        'morgen': '06:00',
+        'nachmittag': '15:00',
+        'mittag': '12:00',
+        'präabend': '17:00',
+        'abend': '19:00',
+        'dämmerung': '20:00',
+        'mitternacht': '24:00',
+        'nacht': '22:00'
+      },
       unit: {
         'millisekunde' : 1,
         'sekunde' : 1000,
@@ -176,6 +188,19 @@ var parseTime = function (string, now) {
         'day after tomorrow' : 172800000,
         'tomorrow' : 86400000
       },
+      daytime: {
+        'dawn': '04:00',
+        'morning': '06:00',
+        'afternoon': '15:00',
+        'noon': '12:00',
+        'midday': '12:00',
+        'pre-evening': '17:00',
+        'preevening': '17:00',
+        'evening': '19:00',
+        'dusk': '20:00',
+        'midnight': '24:00',
+        'night': '22:00'
+      },
       fillwords: {
         'ago' : '-',
         'in' : '+'
@@ -189,6 +214,14 @@ var parseTime = function (string, now) {
     }
   };
   hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
+  // [0]  : full
+  // [1]  : full
+  // [2]  : day
+  // [3]  : month
+  // [4]  : year
+  // [5]  : hour
+  // [6]  : minute
+  // [7]  : second
   if (hhmmss !== null) {
     date.day = parseInt(hhmmss[2], 10);
     date.month = parseInt(hhmmss[3], 10);
@@ -198,13 +231,28 @@ var parseTime = function (string, now) {
     date.second = parseInt(hhmmss[7], 10);
   } else {
     hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( Uhr| o\'clock)))/.exec(string);
+    // [0]  : full
+    // [1]  : full
+    // [2]  : countable (yesterday)
+    // [3]  : hour
+    // [4]  : o'clock | :min:sec
+    // [5]  : :min:sec
+    // [6]  : minute
+    // [7]  : :second
+    // [8]  : second
     if (hhmmss !== null) {
       date.countable = hhmmss[0].toLowerCase();
       date.hour = parseInt(hhmmss[3], 10);
       date.minute = hhmmss[6] !== undefined ? parseInt(hhmmss[6], 10) : 0;
       date.second = hhmmss[8] !== undefined ? parseInt(hhmmss[8], 10) : 0;
     } else {
-      hhmmss = /((\d\d)[\.:,\/](\d\d)[\.:,\/](\d\d\d\d))/.exec(string);
+      hhmmss = /((\d\d)[\.:,\/](\d\d)[\.:,\/](\d\d\d\d)(\s\S+){0,4})/.exec(string);
+      // [0]  : full
+      // [1]  : full
+      // [2]  : day
+      // [3]  : month
+      // [4]  : year
+      // [5]  : daytime (evening)
       if (hhmmss !== null) {
         date.day = parseInt(hhmmss[2], 10);
         date.month = parseInt(hhmmss[3], 10);
