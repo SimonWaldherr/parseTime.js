@@ -6,7 +6,7 @@ convert strings like "five days ago" to an integer (with time in seconds) in two
 ##about
 
 License:   MIT  
-Version: 0.1.8  
+Version: 0.1.9  
 Date:  07.2013  
 
 ##demo
@@ -15,6 +15,7 @@ Test this code on the associated github page [simonwaldherr.github.com/parseTime
 
 ##version
 
+* 0.1.9) RFC2822 and ISO8601 fix (year and day)
 * 0.1.8) parse "morning" and "evening"
 * 0.1.7) regex fix and return false if not parsable
 * 0.1.6) better DIN1355-1 handling and bugfixes

@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.8  *
+ *  Version 0.1.9  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -15,6 +15,7 @@ var parseTime = function (string, now) {
     encoded,
     timedif,
     integer,
+    pbint,
     unit,
     word,
     words,
@@ -37,20 +38,30 @@ var parseTime = function (string, now) {
       return returnval;
     };
 
+  if (now === undefined) {
+    now = new Date().getTime();
+  }
   now = parseInt(now, 10);
   if (string === 'now' || string === 'jetzt') {
     return {
       'absolute': Date.now(),
       'relative': 0,
-      'mode': 'now'
+      'mode': 'now',
+      'pb': 1
     };
   }
-  parsed = Date.parse(string);
+  parsed = new Date(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm"));
   if (!isNaN(parsed)) {
+    if (string.indexOf(parsed.getFullYear()) === -1) {
+      parsed.setFullYear(new Date(now).getFullYear());
+      parsed.setTime(parsed.getTime() + 86400000);
+    }
+    parsed = parsed.getTime();
     return {
       'absolute': parsed,
       'relative': (parsed - now),
-      'mode': 'absolute'
+      'mode': 'absolute',
+      'pb': 2
     };
   }
   regex = {};
@@ -213,6 +224,7 @@ var parseTime = function (string, now) {
       }
     }
   };
+  string = string.toLowerCase().replace(/["'<>\(\)]/gm, '');
   hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
   // [0]  : full
   // [1]  : full
@@ -229,8 +241,9 @@ var parseTime = function (string, now) {
     date.hour = parseInt(hhmmss[5], 10);
     date.minute = parseInt(hhmmss[6], 10);
     date.second = parseInt(hhmmss[7], 10);
+    pbint = 3;
   } else {
-    hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( Uhr| o\'clock)))/.exec(string);
+    hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( uhr| oclock)))/.exec(string);
     // [0]  : full
     // [1]  : full
     // [2]  : countable (yesterday)
@@ -241,10 +254,11 @@ var parseTime = function (string, now) {
     // [7]  : :second
     // [8]  : second
     if (hhmmss !== null) {
-      date.countable = hhmmss[0].toLowerCase();
+      date.countable = hhmmss[0];
       date.hour = parseInt(hhmmss[3], 10);
       date.minute = hhmmss[6] !== undefined ? parseInt(hhmmss[6], 10) : 0;
       date.second = hhmmss[8] !== undefined ? parseInt(hhmmss[8], 10) : 0;
+      pbint = 4;
     } else {
       hhmmss = /((\d\d)[\.:,\/](\d\d)[\.:,\/](\d\d\d\d)(\s\S+){0,4})/.exec(string);
       // [0]  : full
@@ -257,6 +271,8 @@ var parseTime = function (string, now) {
         date.day = parseInt(hhmmss[2], 10);
         date.month = parseInt(hhmmss[3], 10);
         date.year = parseInt(hhmmss[4], 10);
+        date.countable = hhmmss[5];
+        pbint = 5;
       }
     }
   }
@@ -298,7 +314,8 @@ var parseTime = function (string, now) {
       return {
         'absolute': date.parsed.getTime(),
         'relative': date.parsed.getTime() - now,
-        'mode': 'absolute'
+        'mode': 'absolute',
+        'pb': pbint
       };
     }
   }
@@ -344,7 +361,7 @@ var parseTime = function (string, now) {
   for (lang in regex) {
     // if regex is builded
     if (regex[lang] !== undefined) {
-      re = new RegExp(regex[lang], "i");
+      re = new RegExp(regex[lang]);
       encoded = re.exec(string);
       timedif = 0;
       // if regex matches
@@ -360,13 +377,15 @@ var parseTime = function (string, now) {
             return {
               'absolute': (now - timedif),
               'relative': parsed,
-              'mode': 'relative'
+              'mode': 'relative',
+              'pb': 6
             };
           }
           return {
             'absolute': (now + timedif),
             'relative': timedif,
-            'mode': 'relative'
+            'mode': 'relative',
+            'pb': 7
           };
         }
       }
@@ -375,6 +394,7 @@ var parseTime = function (string, now) {
   return {
     'absolute': false,
     'relative': false,
-    'mode': 'error'
+    'mode': 'error',
+    'pb': false
   };
 };
