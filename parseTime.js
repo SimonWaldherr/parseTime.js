@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.6  *
+ *  Version 0.1.7  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -38,11 +38,19 @@ var parseTime = function (string, now) {
     };
 
   now = parseInt(now, 10);
+  if (string === 'now' || string === 'jetzt') {
+    return {
+      'absolute': Date.now(),
+      'relative': 0,
+      'mode': 'now'
+    };
+  }
   parsed = Date.parse(string);
   if (!isNaN(parsed)) {
     return {
       'absolute': parsed,
-      'relative': (parsed - now)
+      'relative': (parsed - now),
+      'mode': 'absolute'
     };
   }
   regex = {};
@@ -241,7 +249,8 @@ var parseTime = function (string, now) {
     if (!isNaN(date.parsed.getTime())) {
       return {
         'absolute': date.parsed.getTime(),
-        'relative': date.parsed.getTime() - now
+        'relative': date.parsed.getTime() - now,
+        'mode': 'absolute'
       };
     }
   }
@@ -263,7 +272,7 @@ var parseTime = function (string, now) {
       regex[lang] += adWordsToRegex('unit', true);
       regex[lang] += ')(';
       regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')?';
+      regex[lang] += ')*';
       regex[lang] += adWordsToRegex('fillfoo', false);
       regex[lang] += ')*(';
       regex[lang] += adWordsToRegex('fillwords', true);
@@ -302,15 +311,22 @@ var parseTime = function (string, now) {
             parsed = -timedif;
             return {
               'absolute': (now - timedif),
-              'relative': parsed
+              'relative': parsed,
+              'mode': 'relative'
             };
           }
           return {
             'absolute': (now + timedif),
-            'relative': timedif
+            'relative': timedif,
+            'mode': 'relative'
           };
         }
       }
     }
   }
+  return {
+    'absolute': false,
+    'relative': false,
+    'mode': 'error'
+  };
 };

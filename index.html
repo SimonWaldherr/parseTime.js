@@ -9,7 +9,7 @@
       var i, retvalue, eles = document.getElementsByTagName('p'), now = new Date().getTime();
       for (i=0; i < eles.length; i++) {
         retvalue = parseTime(eles[i].textContent, now);
-        if (retvalue !== undefined) {
+        if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
           eles[i].innerHTML += '<br/> ' + JSON.stringify(retvalue);
           eles[i].innerHTML += '<br/> ' + new Date(retvalue.absolute).toUTCString();
         } else {
@@ -24,7 +24,7 @@
         inp = document.getElementById('inp').value,
         now = new Date().getTime(),
         retvalue = parseTime(inp, now);
-      if (retvalue !== undefined) {
+      if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
         ret += JSON.stringify(retvalue);
         ret += '<br/> ' + new Date(retvalue.absolute).toUTCString();
         ele.style.color = 'black';
@@ -38,19 +38,20 @@
 </head>
 <body>
   <h1>parseTime.js</h1>
-  <h2>Version: 0.1.6</h2>
+  <h2>Version: 0.1.7</h2>
   <h2>License: MIT</h2>
   <br/>
   <input id="inp" onkeyup="demo()" type="text"><p id="ret"></p>
   <hr/>
+  <p><span>now<span></p>
   <p><span>i was in Berlin one month ago<span></p>
-  <p><span>i was in Berlin five day ago<span></p>
+  <p><span>i was in Berlin five days ago<span></p>
   <p><span>i go to Munich in two weeks<span></p>
   <p><span>you where in london for four days<span></p>
   <p><span>it will be ready in 2 months<span></p>
   <p><span>it will be ready in 23 weeks from now<span></p>
   <p><span>this is a text without time informations<span></p>
-  <p><span>in zehn Tag<span></p>
+  <p><span>in zehn Tagen<span></p>
   <p><span>vor einer Woche<span></p>
   <p><span>Hier steht keine Zeitangabe<span></p>
   <p><span>the $event is in a few days<span></p>
@@ -63,5 +64,6 @@
   <p><span>30.01.2013 13:37:59<span></p>
   <p><span>2013-01-29 13:37:59<span></p>
   <p><span>übermorgen um 16 Uhr<span></p>
+  <p><span>yesterday 10 o'clock<span></p>
 </body>
 </html>
