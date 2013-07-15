@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.1.9  *
+ *  Version 0.2.0  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -19,9 +19,9 @@ var parseTime = function (string, now) {
     unit,
     word,
     words,
-    parsed,
     hhmmss,
-    date = {},
+    tzoffset,
+    dateO = {},
     regex = {},
     adWordsToRegex = function (fillfoo, first) {
       var returnval = '', i;
@@ -40,6 +40,8 @@ var parseTime = function (string, now) {
 
   if (now === undefined) {
     now = new Date().getTime();
+  } else if (typeof now === 'object') {
+    now = now.getTime();
   }
   now = parseInt(now, 10);
   if (string === 'now' || string === 'jetzt') {
@@ -50,16 +52,19 @@ var parseTime = function (string, now) {
       'pb': 1
     };
   }
-  parsed = new Date(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm"));
-  if (!isNaN(parsed)) {
-    if (string.indexOf(parsed.getFullYear()) === -1) {
-      parsed.setFullYear(new Date(now).getFullYear());
-      parsed.setTime(parsed.getTime() + 86400000);
+  dateO.parsed = new Date();
+  dateO.parsed = new Date(Date.parse(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm")));
+  if (!isNaN(dateO.parsed)) {
+    if (string.indexOf(dateO.parsed.getFullYear()) === -1) {
+      dateO.now = new Date();
+      dateO.now = Date.parse(now);
+      dateO.parsed.setFullYear(dateO.now.getFullYear());
+      dateO.parsed.setTime(dateO.parsed.getTime() + 86400000);
     }
-    parsed = parsed.getTime();
+    dateO.parsed = dateO.parsed.getTime();
     return {
-      'absolute': parsed,
-      'relative': (parsed - now),
+      'absolute': dateO.parsed,
+      'relative': (dateO.parsed - now),
       'mode': 'absolute',
       'pb': 2
     };
@@ -199,6 +204,20 @@ var parseTime = function (string, now) {
         'day after tomorrow' : 172800000,
         'tomorrow' : 86400000
       },
+      month: {
+        'jan' : '01',
+        'feb' : '02',
+        'mar' : '03',
+        'apr' : '04',
+        'may' : '05',
+        'jun' : '06',
+        'jul' : '07',
+        'aug' : '08',
+        'sep' : '09',
+        'oct' : '10',
+        'nov' : '11',
+        'dec' : '12'
+      },
       daytime: {
         'dawn': '04:00',
         'morning': '06:00',
@@ -235,12 +254,12 @@ var parseTime = function (string, now) {
   // [6]  : minute
   // [7]  : second
   if (hhmmss !== null) {
-    date.day = parseInt(hhmmss[2], 10);
-    date.month = parseInt(hhmmss[3], 10);
-    date.year = parseInt(hhmmss[4], 10);
-    date.hour = parseInt(hhmmss[5], 10);
-    date.minute = parseInt(hhmmss[6], 10);
-    date.second = parseInt(hhmmss[7], 10);
+    dateO.day = hhmmss[2].length === 1 ? '0' + hhmmss[2] : hhmmss[2];
+    dateO.month = hhmmss[3].length === 1 ? '0' + hhmmss[3] : hhmmss[3];
+    dateO.year = hhmmss[4].length === 2 ? '20' + hhmmss[4] : hhmmss[4];
+    dateO.hour = hhmmss[5].length === 1 ? '0' + hhmmss[5] : hhmmss[5];
+    dateO.minute = hhmmss[6].length === 1 ? '0' + hhmmss[6] : hhmmss[6];
+    dateO.second = hhmmss[7].length === 1 ? '0' + hhmmss[7] : hhmmss[7];
     pbint = 3;
   } else {
     hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( uhr| oclock)))/.exec(string);
@@ -254,10 +273,11 @@ var parseTime = function (string, now) {
     // [7]  : :second
     // [8]  : second
     if (hhmmss !== null) {
-      date.countable = hhmmss[0];
-      date.hour = parseInt(hhmmss[3], 10);
-      date.minute = hhmmss[6] !== undefined ? parseInt(hhmmss[6], 10) : 0;
-      date.second = hhmmss[8] !== undefined ? parseInt(hhmmss[8], 10) : 0;
+      dateO.countable = hhmmss[0];
+      dateO.hour = hhmmss[3] === undefined ? '12' : hhmmss[3].length === 1 ? '0' + hhmmss[3] : hhmmss[3];
+      dateO.minute = hhmmss[6] === undefined ? '00' : hhmmss[6].length === 1 ? '0' + hhmmss[6] : hhmmss[6];
+      dateO.second = hhmmss[7] === undefined ? '00' : hhmmss[7].length === 1 ? '0' + hhmmss[7] : hhmmss[7];
+      dateO.second = dateO.second.replace(':', '');
       pbint = 4;
     } else {
       hhmmss = /((\d\d)[\.:,\/](\d\d)[\.:,\/](\d\d\d\d)(\s\S+){0,4})/.exec(string);
@@ -268,22 +288,40 @@ var parseTime = function (string, now) {
       // [4]  : year
       // [5]  : daytime (evening)
       if (hhmmss !== null) {
-        date.day = parseInt(hhmmss[2], 10);
-        date.month = parseInt(hhmmss[3], 10);
-        date.year = parseInt(hhmmss[4], 10);
-        date.countable = hhmmss[5];
+        dateO.day = hhmmss[2].length === 1 ? '0' + hhmmss[2] : hhmmss[2];
+        dateO.month = hhmmss[3].length === 1 ? '0' + hhmmss[3] : hhmmss[3];
+        dateO.year = hhmmss[4].length === 2 ? '20' + hhmmss[4] : hhmmss[4];
+        dateO.countable = hhmmss[5];
         pbint = 5;
       }
     }
   }
-  if (date.hour !== undefined) {
+  if (dateO.hour !== undefined) {
     for (lang in words) {
       if (words[lang] !== undefined) {
         for (word in words[lang].countable) {
           if (words[lang].countable[word] !== undefined) {
-            if (date.countable !== undefined) {
-              if (date.countable.indexOf(word) !== -1 && date.countableint === undefined) {
-                date.countableint = words[lang].countable[word];
+            if (dateO.countable !== undefined) {
+              if (dateO.countable.indexOf(word) !== -1 && dateO.countableint === undefined) {
+                dateO.countableint = words[lang].countable[word];
+              }
+            }
+          }
+        }
+      }
+    }
+  } else {
+    for (lang in words) {
+      if (words[lang] !== undefined) {
+        for (word in words[lang].daytime) {
+          if (words[lang].daytime[word] !== undefined) {
+            if (dateO.countable !== undefined) {
+              dateO.countable = dateO.countable.trim();
+              if ((dateO.countable.indexOf(word) !== -1) && (dateO.countableint === undefined)) {
+                dateO.countableint = 0;
+                dateO.hour = words[lang].daytime[word].split(':')[0];
+                dateO.minute = words[lang].daytime[word].split(':')[1];
+                dateO.second = '00';
               }
             }
           }
@@ -291,29 +329,44 @@ var parseTime = function (string, now) {
       }
     }
   }
-  if (date.countableint !== undefined) {
-    date.now = new Date(Date.now() + date.countableint).toString();
+  if (dateO.countableint !== undefined) {
+    dateO.now = new Date(now + dateO.countableint).getTime();
   } else {
-    date.now = new Date().toString();
+    dateO.now = new Date(now).getTime();
   }
-  date.today = /(([A-Za-z0-9, ]+) \d\d:\d\d:\d\d ([A-Z]+))/.exec(date.now);
-  date.timezone = date.today[3];
-  if (date.year === undefined) {
-    date.today = date.today[2];
+  if (dateO.year === undefined) {
+    dateO.parsed = new Date();
+    dateO.parsed.setTime(dateO.now);
+    dateO.day = dateO.parsed.getDate().toString();
+    dateO.month = (dateO.parsed.getMonth() + 1).toString();
+    dateO.year = (dateO.parsed.getFullYear()).toString();
+    dateO.day = dateO.day.length === 1 ? '0' + dateO.day : dateO.day;
+    dateO.month = dateO.month.length === 1 ? '0' + dateO.month : dateO.month;
+    dateO.today = dateO.year + '-' + dateO.month + '-' + dateO.day;
   } else {
-    date.today = date.year + '-' + date.month + '-' + date.day;
+    dateO.today = dateO.year + '-' + dateO.month + '-' + dateO.day;
   }
-  if (date.hour !== undefined) {
-    date.parsed = new Date(date.today + ' ' + date.hour + ':' + date.minute + ':' + date.second + ' ' + date.timezone);
-  } else if (date.day !== undefined) {
-    date.parsed = new Date(date.today + ' 12:00:00 ' + date.timezone);
+  if (dateO.hour !== undefined) {
+    dateO.string = dateO.today + 'T' + dateO.hour + ':' + dateO.minute + ':' + dateO.second + '+00:00';
+    dateO.parsed = new Date();
+    dateO.parsed = Date.parse(dateO.string);
+  } else if ((dateO.day !== undefined) && (dateO.today !== undefined)) {
+    dateO.string = dateO.today + 'T12:00:00+00:00';
+    dateO.parsed = new Date();
+    dateO.parsed = Date.parse(dateO.string);
   }
 
-  if (date.parsed !== undefined) {
-    if (!isNaN(date.parsed.getTime())) {
+  if ((typeof dateO.parsed === 'number') && (pbint !== undefined)) {
+    if (!isNaN(dateO.parsed)) {
+      tzoffset = new Date().getTimezoneOffset() * -30000;
+      if ((pbint === 3) || (pbint === 5)) {
+        dateO.parsed = dateO.parsed - tzoffset;
+      } else if (pbint === 4) {
+        dateO.parsed = dateO.parsed - tzoffset * 2;
+      }
       return {
-        'absolute': date.parsed.getTime(),
-        'relative': date.parsed.getTime() - now,
+        'absolute': dateO.parsed,
+        'relative': dateO.parsed - now,
         'mode': 'absolute',
         'pb': pbint
       };
@@ -373,10 +426,10 @@ var parseTime = function (string, now) {
           timedif = integer * unit;
           // if fillwords can be found in match-array
           if (encoded.indexOf(Object.keys(words[lang].fillwords)[0]) !== -1) {
-            parsed = -timedif;
+            dateO.parsed = -timedif;
             return {
               'absolute': (now - timedif),
-              'relative': parsed,
+              'relative': dateO.parsed,
               'mode': 'relative',
               'pb': 6
             };
