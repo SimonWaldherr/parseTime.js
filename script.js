@@ -26,6 +26,7 @@ window.onload = function () {
       eles[i].innerHTML += '<br/> not parsable';
     }
   }
+  demo();
 };
 function demo() {
   "use strict";

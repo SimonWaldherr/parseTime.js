@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.0  *
+ *  Version 0.2.1  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -21,6 +21,7 @@ var parseTime = function (string, now) {
     words,
     hhmmss,
     tzoffset,
+    ddmmyyyy = {},
     dateO = {},
     regex = {},
     adWordsToRegex = function (fillfoo, first) {
@@ -43,7 +44,7 @@ var parseTime = function (string, now) {
   } else if (typeof now === 'object') {
     now = now.getTime();
   }
-  string = string.toLowerCase().replace(/["'<>\(\)]/gm, '');
+  string = string.toLowerCase().replace(/["'<>\(\)]/gm, '').replace(/(\d)([A-Za-z])/, "$1 $2", "gm");
   now = parseInt(now, 10);
   if (string === 'now' || string === 'jetzt') {
     return {
@@ -59,8 +60,10 @@ var parseTime = function (string, now) {
     if (string.indexOf(dateO.parsed.getFullYear()) === -1) {
       dateO.now = new Date();
       dateO.now = Date.parse(now);
-      dateO.parsed.setFullYear(dateO.now.getFullYear());
-      dateO.parsed.setTime(dateO.parsed.getTime() + 86400000);
+      if (!isNaN(dateO.now)) {
+        dateO.parsed.setFullYear(dateO.now.getFullYear());
+        dateO.parsed.setTime(dateO.parsed.getTime() + 86400000);
+      }
     }
     dateO.parsed = dateO.parsed.getTime();
     return {
@@ -444,6 +447,37 @@ var parseTime = function (string, now) {
       }
     }
   }
+  ddmmyyyy.match = /(\d\d?)[,\.](\d\d?)[,\.](\d\d(\d\d)?)/.exec(string);
+  if (ddmmyyyy.match !== null) {
+    ddmmyyyy.day = ddmmyyyy.match[1];
+    ddmmyyyy.month = ddmmyyyy.match[2];
+    ddmmyyyy.year = ddmmyyyy.match[3];
+    pbint = 8;
+  } else {
+    ddmmyyyy.match = /(\d\d(\d\d)?)[\/\-](\d\d?)[\/\-](\d\d?)/.exec(string);
+    if (ddmmyyyy.match !== null) {
+      ddmmyyyy.day = ddmmyyyy.match[4];
+      ddmmyyyy.month = ddmmyyyy.match[3];
+      ddmmyyyy.year = ddmmyyyy.match[1];
+      pbint = 9;
+    }
+  }
+  if (ddmmyyyy.day !== undefined) {
+    ddmmyyyy.day = ddmmyyyy.day.length === 1 ? '0' + ddmmyyyy.day : ddmmyyyy.day;
+    ddmmyyyy.month = ddmmyyyy.month.length === 1 ? '0' + ddmmyyyy.month : ddmmyyyy.month;
+    ddmmyyyy.year = ddmmyyyy.year.length === 2 ? parseInt(ddmmyyyy.year, 10) > 70 ? '19' + ddmmyyyy.year : '20' + ddmmyyyy.year : ddmmyyyy.year;
+    dateO.today = ddmmyyyy.year + '-' + ddmmyyyy.month + '-' + ddmmyyyy.day;
+    dateO.string = dateO.today + 'T12:00:00+00:00';
+    dateO.parsed = new Date();
+    dateO.parsed = Date.parse(dateO.string);
+    return {
+      'absolute': dateO.parsed,
+      'relative': dateO.parsed - now,
+      'mode': 'absolute',
+      'pb': pbint
+    };
+  }
+
   return {
     'absolute': false,
     'relative': false,
