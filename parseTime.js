@@ -43,6 +43,7 @@ var parseTime = function (string, now) {
   } else if (typeof now === 'object') {
     now = now.getTime();
   }
+  string = string.toLowerCase().replace(/["'<>\(\)]/gm, '');
   now = parseInt(now, 10);
   if (string === 'now' || string === 'jetzt') {
     return {
@@ -243,7 +244,6 @@ var parseTime = function (string, now) {
       }
     }
   };
-  string = string.toLowerCase().replace(/["'<>\(\)]/gm, '');
   hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
   // [0]  : full
   // [1]  : full

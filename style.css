@@ -31,6 +31,16 @@ body {
   background-image: url('./bg.png'); /* by Subtle Patterns (http://subtlepatterns.com/) licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License. */
 }
 
+#inp {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0px;
+  font-size: 29px;
+  text-align: center;
+}
+
 .parsedBox, #header, #footer {
   width: 80%;
   min-width: 600px;
