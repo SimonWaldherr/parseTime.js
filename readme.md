@@ -6,7 +6,7 @@ convert strings like "five days ago" to an integer (with time in seconds) in two
 ##about
 
 License:   MIT  
-Version: 0.2.1  
+Version: 0.2.2  
 Date:  07.2013  
 
 ##demo
@@ -15,6 +15,7 @@ Test this code on the associated github page [simonwaldherr.github.com/parseTime
 
 ##version
 
+* 0.2.2) build via grunt and lang in seperate files
 * 0.2.1) parse non strict DIN1355-1 and other
 * 0.2.0) should now work in fucking firefox
 * 0.1.9) RFC2822 and ISO8601 fix (year and day)

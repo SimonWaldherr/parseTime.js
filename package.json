@@ -1,0 +1,44 @@
+{
+  "name": "parseTime",
+  "title": "parseTime.js",
+  "description": "convert strings like 'five days ago' to an integer (with time in seconds)",
+  "version": "0.2.2",
+  "homepage": "https://github.com/SimonWaldherr/parseTime.js",
+  "author": {
+    "name": "Simon Waldherr",
+    "email": "contact@simonwaldherr.de",
+    "url": "http://simon.waldherr.eu/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimonWaldherr/parseTime.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SimonWaldherr/parseTime.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://simon.waldherr.eu/license/mit/"
+    }
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": ">= 0.4.1",
+    "gzip-js": ">= 0.3.1",
+    "grunt-contrib-concat": ">= 0.3.0",
+    "grunt-contrib-jshint": ">= 0.6.0",
+    "grunt-contrib-uglify": ">= 0.2.2",
+    "grunt-compare-size": ">= 0.0.0",
+    "gzip-js": ">= 0.3.1"
+  },
+  "keywords": [
+    "time",
+    "date",
+    "dates",
+    "times",
+    "language",
+    "parse",
+    "strings"
+  ]
+}
