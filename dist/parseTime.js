@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.2  *
+ *  Version 0.2.3  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -62,7 +62,9 @@ var parseTimeObject = {
         'yesterday' : -86400000,
         'today' : 1,
         'day after tomorrow' : 172800000,
-        'tomorrow' : 86400000
+        'tomorrow' : 86400000,
+        'in a week' : 604800000,
+        'last week' : -604800000
       },
       month: {
         'jan' : '01',
@@ -131,6 +133,19 @@ var parseTimeObject = {
         }
       }
       return returnval;
+    },
+    objectKeyInString = function (obj, str) {
+      var i, ret = {}, retbool, keys = Object.keys(obj);
+      for (i = 0; i < keys.length; i += 1) {
+        if (string.indexOf(keys[i]) !== -1) {
+          ret[keys[i]] = string.indexOf(keys[i]);
+          retbool = true;
+        }
+      }
+      if (retbool) {
+        return ret;
+      }
+      return false;
     };
 
   if (now === undefined) {
@@ -246,6 +261,23 @@ var parseTimeObject = {
                 dateO.hour = parseTimeObject.words[lang].daytime[word].split(':')[0];
                 dateO.minute = parseTimeObject.words[lang].daytime[word].split(':')[1];
                 dateO.second = '00';
+                pbint = 6;
+              }
+            } else if ((string.indexOf(word) !== -1) && (objectKeyInString(parseTimeObject.words[lang].countable, string) !== false)) {
+              hhmmss = word;
+              word = objectKeyInString(parseTimeObject.words[lang].countable, string);
+              word = Object.keys(word)[0];
+              if (word !== undefined) {
+                if (word !== hhmmss) {
+                  dateO.countable = word;
+                  dateO.countableint = parseTimeObject.words[lang].countable[word];
+                  hhmmss = parseTimeObject.words[lang].daytime[hhmmss];
+                  dateO.hour = hhmmss.split(':')[0];
+                  dateO.minute = hhmmss.split(':')[1];
+                  dateO.second = '00';
+                  pbint = 7;
+                  console.log([dateO,hhmmss]);
+                }
               }
             }
           }
@@ -355,14 +387,14 @@ var parseTimeObject = {
               'absolute': (now - timedif),
               'relative': dateO.parsed,
               'mode': 'relative',
-              'pb': 6
+              'pb': 8
             };
           }
           return {
             'absolute': (now + timedif),
             'relative': timedif,
             'mode': 'relative',
-            'pb': 7
+            'pb': 9
           };
         }
       }
@@ -373,14 +405,14 @@ var parseTimeObject = {
     ddmmyyyy.day = ddmmyyyy.match[1];
     ddmmyyyy.month = ddmmyyyy.match[2];
     ddmmyyyy.year = ddmmyyyy.match[3];
-    pbint = 8;
+    pbint = 10;
   } else {
     ddmmyyyy.match = /(\d\d(\d\d)?)[\/\-](\d\d?)[\/\-](\d\d?)/.exec(string);
     if (ddmmyyyy.match !== null) {
       ddmmyyyy.day = ddmmyyyy.match[4];
       ddmmyyyy.month = ddmmyyyy.match[3];
       ddmmyyyy.year = ddmmyyyy.match[1];
-      pbint = 9;
+      pbint = 11;
     }
   }
   if (ddmmyyyy.day !== undefined) {
@@ -406,8 +438,7 @@ var parseTimeObject = {
     'pb': false
   };
 };
-;/*jslint indent: 2 */
-/*global words     */
+
 
 parseTimeObject.words.de = {
   numbers: {
@@ -449,7 +480,9 @@ parseTimeObject.words.de = {
     'gestern' : -86400000,
     'heute' : 1,
     'übermorgen' : 172800000,
-    'morgen' : 86400000
+    'morgen' : 86400000,
+    'nächste woche' : 604800000,
+    'vorherige woche' : -604800000
   },
   daytime: {
     'morgendämmerung': '04:00',

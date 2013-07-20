@@ -1,6 +1,3 @@
-/*jslint indent: 2 */
-/*global words     */
-
 parseTimeObject.words.de = {
   numbers: {
     'null' : 0,
@@ -41,7 +38,9 @@ parseTimeObject.words.de = {
     'gestern' : -86400000,
     'heute' : 1,
     'übermorgen' : 172800000,
-    'morgen' : 86400000
+    'morgen' : 86400000,
+    'nächste woche' : 604800000,
+    'vorherige woche' : -604800000
   },
   daytime: {
     'morgendämmerung': '04:00',

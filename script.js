@@ -1,8 +1,7 @@
 /*jslint browser: true, indent: 2 */
 /*global parseTime */
 
-var now = new Date().getTime(),
-  weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 window.onload = function () {
   "use strict";
@@ -14,7 +13,7 @@ window.onload = function () {
     eles = document.getElementsByTagName('p');
 
   for (i = 0; i < eles.length; i += 1) {
-    retvalue = parseTime(eles[i].textContent, now);
+    retvalue = parseTime(eles[i].textContent);
     if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
       ldate = new Date(retvalue.absolute).toLocaleDateString();
       ltime = new Date(retvalue.absolute).toLocaleTimeString();
@@ -36,7 +35,7 @@ function demo() {
     lday,
     ele = document.getElementById('ret'),
     inp = document.getElementById('inp').value,
-    retvalue = parseTime(inp, now);
+    retvalue = parseTime(inp);
 
   if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
     ldate = new Date(retvalue.absolute).toLocaleDateString();
