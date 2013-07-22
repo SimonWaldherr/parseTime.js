@@ -104,7 +104,8 @@ var parseTimeObject = {
         '\\.' : ''
       }
     }
-  }
+  },
+  regexes: {}
 }, parseTime = function (string, now) {
   "use strict";
   var re,
@@ -119,7 +120,6 @@ var parseTimeObject = {
     tzoffset,
     ddmmyyyy = {},
     dateO = {},
-    regex = {},
     adWordsToRegex = function (fillfoo, first) {
       var returnval = '', i;
       for (i in parseTimeObject.words[lang][fillfoo]) {
@@ -182,7 +182,7 @@ var parseTimeObject = {
       'pb': 2
     };
   }
-  regex = {};
+
   hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
   // [0]  : full
   // [1]  : full
@@ -332,27 +332,27 @@ var parseTimeObject = {
   string = ' ' + string + ' ';
   for (lang in parseTimeObject.words) {
     if (parseTimeObject.words[lang] !== undefined) {
-      regex[lang] = '((';
-      regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')+(';
-      regex[lang] += adWordsToRegex('fillwords', true);
-      regex[lang] += ')*(';
-      regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')*(\\d+';
-      regex[lang] += adWordsToRegex('numbers', false);
-      regex[lang] += ')+(';
-      regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')*((';
-      regex[lang] += adWordsToRegex('unit', true);
-      regex[lang] += ')(';
-      regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')*';
-      regex[lang] += adWordsToRegex('fillfoo', false);
-      regex[lang] += ')*(';
-      regex[lang] += adWordsToRegex('fillwords', true);
-      regex[lang] += ')*(';
-      regex[lang] += adWordsToRegex('fillfoo', true);
-      regex[lang] += ')+)';
+      parseTimeObject.regexes[lang] = '((';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', true);
+      parseTimeObject.regexes[lang] += ')+(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillwords', true);
+      parseTimeObject.regexes[lang] += ')*(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', true);
+      parseTimeObject.regexes[lang] += ')*(\\d+';
+      parseTimeObject.regexes[lang] += adWordsToRegex('numbers', false);
+      parseTimeObject.regexes[lang] += ')+(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', true);
+      parseTimeObject.regexes[lang] += ')*((';
+      parseTimeObject.regexes[lang] += adWordsToRegex('unit', true);
+      parseTimeObject.regexes[lang] += ')(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', true);
+      parseTimeObject.regexes[lang] += ')*';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', false);
+      parseTimeObject.regexes[lang] += ')*(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillwords', true);
+      parseTimeObject.regexes[lang] += ')*(';
+      parseTimeObject.regexes[lang] += adWordsToRegex('fillfoo', true);
+      parseTimeObject.regexes[lang] += ')+)';
     }
   }
   // [0]  : unimportant
@@ -367,10 +367,10 @@ var parseTimeObject = {
   // [9]  : fillwords (mostly past)
   // [10] : unimportant
 
-  for (lang in regex) {
-    // if regex is builded
-    if (regex[lang] !== undefined) {
-      re = new RegExp(regex[lang]);
+  for (lang in parseTimeObject.regexes) {
+    // if regexes is builded
+    if (parseTimeObject.regexes[lang] !== undefined) {
+      re = new RegExp(parseTimeObject.regexes[lang]);
       encoded = re.exec(string);
       timedif = 0;
       // if regex matches
