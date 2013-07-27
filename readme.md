@@ -1,7 +1,7 @@
 #parseTime.js
 
-convert strings like "five days ago" to an integer (with time in seconds) in two languages (en, de)  
-*coders who like parseTime.js maybe also like [disTime.js](https://github.com/SimonWaldherr/disTime.js)*
+convert strings like "five days ago" to an integer (with time in milliseconds (as relative value from now and as UNIX Timestamp)) in three languages (en, de, pt)  
+*coders who like parseTime.js maybe also like [disTime.js](https://github.com/SimonWaldherr/disTime.js)*  
 
 ##about
 
@@ -11,7 +11,7 @@ Date:  07.2013
 
 ##demo
 
-Test this code on the associated github page [simonwaldherr.github.com/parseTime.js/](http://simonwaldherr.github.com/parseTime.js/).
+Test this code on the associated github page [simonwaldherr.github.com/parseTime.js/](http://simonwaldherr.github.com/parseTime.js/).  
 
 ##version
 
@@ -33,8 +33,8 @@ Test this code on the associated github page [simonwaldherr.github.com/parseTime
 
 ##feature request
 
-you can [request more features and date format types with the github issue tracker](https://github.com/SimonWaldherr/parseTime.js/issues).
+you can [request more features and date format types with the github issue tracker](https://github.com/SimonWaldherr/parseTime.js/issues).  
 
 ##contact
 
-Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de) or on [Twitter](http://twitter.com/simonwaldherr). This software will be continually developed. Suggestions and tips are always welcome.
+Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de), on [App.net](https://alpha.app.net/simonwaldherr) or on [Twitter](http://twitter.com/simonwaldherr). This software will be continually developed. Suggestions and tips are always welcome.  
