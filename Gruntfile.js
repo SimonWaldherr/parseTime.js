@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         separator: '\n\n'
       },
       dist: {
-        src: ['./parseTime.js', 'lang/parseTime.de.js'],
+        src: ['./parseTime.js', 'lang/parseTime.de.js', 'lang/parseTime.pt.js'],
         dest: './dist/parseTime.js'
       }
     },
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
       options: {
         banner: '/* * * * * * * * * *\n' +
                 ' *  parseTime .js  *\n' +
-                ' *  Version 0.2.3  *\n' +
+                ' *  Version 0.2.4  *\n' +
                 ' *  License:  MIT  *\n' +
                 ' * Simon  Waldherr *\n' +
                 ' * * * * * * * * * */\n\n',

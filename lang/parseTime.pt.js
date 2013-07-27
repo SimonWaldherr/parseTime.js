@@ -1,10 +1,12 @@
 parseTimeObject.words.pt = {
   numbers: {
     'zero' : 0,
+    'e meio' : 0.5,
     'um' : 1,
     'dois' : 2,
     'tr&ecirc;s' : 3,
-    'e meio' : 3.5,
+    'poucos' : 3.5,
+    'alguns' : 3.5,
     'quatro' : 4,
     'cinco' : 5,
     'seis' : 6,
@@ -73,10 +75,7 @@ parseTimeObject.words.pt = {
     'manh&atilde;': '06:00',
     'tarde': '15:00',
     'meio-dia': '12:00',
-    'meio-dia': '12:00',
     'pr&eacute;-noite': '17:00',
-    'pr&eacute;-noite': '17:00',
-    'noite': '19:00',
     'crep&uacute;sculo': '20:00',
     'meia-noite': '24:00',
     'noite': '22:00'

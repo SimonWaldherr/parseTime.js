@@ -17,6 +17,7 @@ var parseTimeObject = {
         'two' : 2,
         'three' : 3,
         'a few' : 3.5,
+        'some' : 3.5,
         'four' : 4,
         'five' : 5,
         'six' : 6,
@@ -447,6 +448,7 @@ parseTimeObject.words.de = {
     'zwei' : 2,
     'drei' : 3,
     'ein paar' : 3.5,
+    'einigen' : 3.5,
     'vier' : 4,
     'fünf' : 5,
     'sechs' : 6,
@@ -520,5 +522,100 @@ parseTimeObject.words.de = {
     'en' : '',
     'er' : '',
     'n' : ''
+  }
+};
+
+
+parseTimeObject.words.pt = {
+  numbers: {
+    'zero' : 0,
+    'e meio' : 0.5,
+    'um' : 1,
+    'dois' : 2,
+    'tr&ecirc;s' : 3,
+    'poucos' : 3.5,
+    'alguns' : 3.5,
+    'quatro' : 4,
+    'cinco' : 5,
+    'seis' : 6,
+    'sete' : 7,
+    'oito' : 8,
+    'nove' : 9,
+    'dez' : 10,
+    'onze' : 11,
+    'doze' : 12,
+    'treze' : 13,
+    'catorze' : 14,
+    'quinze' : 15,
+    'dezesseis' : 16,
+    'dezessete' : 17,
+    'dezoito' : 18,
+    'dezenove' : 19,
+    'vinte' : 20,
+    'trinta' : 30,
+    'quarenta' : 40,
+    'cinquenta' : 50,
+    'sessenta' : 60,
+    'setenta' : 70,
+    'oitenta' : 80,
+    'noventa' : 90,
+    'cem' : 100,
+    'mil' : 1000,
+    'milh&atilde;o' : 1000000
+  },
+  unit: {
+    'milissegundo' : 1,
+    'segundo' : 1000,
+    'minuto' : 60000,
+    'hora' : 3600000,
+    'dia' : 86400000,
+    'semana' : 604800000,
+    'm&ecirc;s' : 2592000000,
+    'trimestre' : 7776000000,
+    'ano' : 31536000000,
+    'd&eacute;cada' : 315360000000
+  },
+  countable: {
+    'antes de ontem' : -172800000,
+    'ontem' : -86400000,
+    'hoje' : 1,
+    'depois de amanh&atilde;' : 172800000,
+    'amanh&atilde;' : 86400000,
+    'em uma semana' : 604800000,
+    '&uacute;ltima semana' : -604800000
+  },
+  month: {
+    'jan'   : '01',
+    'fev'   : '02',
+    'mar'   : '03',
+    'abril' : '04',
+    'mai'   : '05',
+    'jun'   : '06',
+    'jul'   : '07',
+    'ago'   : '08',
+    'set'   : '09',
+    'out'   : '10',
+    'nov'   : '11',
+    'dez'   : '12'
+  },
+  daytime: {
+    'madrugada': '04:00',
+    'manh&atilde;': '06:00',
+    'tarde': '15:00',
+    'meio-dia': '12:00',
+    'pr&eacute;-noite': '17:00',
+    'crep&uacute;sculo': '20:00',
+    'meia-noite': '24:00',
+    'noite': '22:00'
+  },
+  fillwords: {
+    'atr&aacute;s' : '-',
+    'em' : '+'
+  },
+  fillfoo: {
+    's' : '',
+    '\\-' : '',
+    '\\ ' : '',
+    '\\.' : ''
   }
 };

@@ -5,6 +5,7 @@ parseTimeObject.words.de = {
     'zwei' : 2,
     'drei' : 3,
     'ein paar' : 3.5,
+    'einigen' : 3.5,
     'vier' : 4,
     'fünf' : 5,
     'sechs' : 6,
