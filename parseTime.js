@@ -160,6 +160,16 @@ var parseTimeObject = {
 
   for (var lang in parseTimeObject.words) {
       var cur_lang = parseTimeObject.words[lang];
+      for (var implicit_date in cur_lang.countable) {
+          if (string == implicit_date) {
+              var val = cur_lang.countable[implicit_date];
+              if (val > 0) {
+                  string = 'in '+ (val/100) + ' seconds';
+              } else {
+                  string = '' + (val/100) + ' seconds ago';
+              }
+          }
+      }
       for (var word_for_now in cur_lang.currently) {
           if (string === cur_lang.currently[word_for_now])
               return {
