@@ -1,4 +1,5 @@
 parseTimeObject.words.en = {
+  currently: ['now'],
   numbers: {
     'zero' : 0,
     'one' : 1,

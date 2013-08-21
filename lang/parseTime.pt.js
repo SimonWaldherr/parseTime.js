@@ -1,4 +1,5 @@
 parseTimeObject.words.pt = {
+  currently : ['agora'],
   numbers: {
     'zero' : 0,
     'e meio' : 0.5,
