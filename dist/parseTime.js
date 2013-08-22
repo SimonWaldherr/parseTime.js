@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.3  *
+ *  Version 0.2.5  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -11,6 +11,7 @@
 var parseTimeObject = {
   words: {
     en: {
+      currently: ['now'],
       numbers: {
         'zero' : 0,
         'one' : 1,
@@ -117,12 +118,18 @@ var parseTimeObject = {
     pbint,
     unit,
     word,
+    val,
     hhmmss,
     tzoffset,
+    word_for_now,
+    cur_lang,
+    implicit_date,
     ddmmyyyy = {},
     dateO = {},
     adWordsToRegex = function (fillfoo, first) {
-      var returnval = '', i;
+      var returnval = '',
+        i;
+
       for (i in parseTimeObject.words[lang][fillfoo]) {
         if (parseTimeObject.words[lang][fillfoo][i] !== undefined) {
           if (first === false) {
@@ -136,7 +143,11 @@ var parseTimeObject = {
       return returnval;
     },
     objectKeyInString = function (obj, str) {
-      var i, ret = {}, retbool, keys = Object.keys(obj);
+      var i,
+        ret = {},
+        retbool,
+        keys = Object.keys(obj);
+
       for (i = 0; i < keys.length; i += 1) {
         if (string.indexOf(keys[i]) !== -1) {
           ret[keys[i]] = string.indexOf(keys[i]);
@@ -156,13 +167,29 @@ var parseTimeObject = {
   }
   string = string.toLowerCase().replace(/["'<>\(\)]/gm, '').replace(/(\d)([A-Za-z])/, "$1 $2", "gm");
   now = parseInt(now, 10);
-  if (string === 'now' || string === 'jetzt') {
-    return {
-      'absolute': Date.now(),
-      'relative': 0,
-      'mode': 'now',
-      'pb': 1
-    };
+
+  for (lang in parseTimeObject.words) {
+    cur_lang = parseTimeObject.words[lang];
+    for (implicit_date in cur_lang.countable) {
+      if (string === implicit_date) {
+        val = cur_lang.countable[implicit_date];
+        if (val > 0) {
+          string = 'in ' + (val / 100) + ' seconds';
+        } else {
+          string = (val / 100) + ' seconds ago';
+        }
+      }
+    }
+    for (word_for_now in cur_lang.currently) {
+      if (string === cur_lang.currently[word_for_now]) {
+        return {
+          'absolute': Date.now(),
+          'relative': 0,
+          'mode': 'now',
+          'pb': 1
+        };
+      }
+    }
   }
   dateO.parsed = new Date();
   dateO.parsed = new Date(Date.parse(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm")));
@@ -277,7 +304,6 @@ var parseTimeObject = {
                   dateO.minute = hhmmss.split(':')[1];
                   dateO.second = '00';
                   pbint = 7;
-                  console.log([dateO,hhmmss]);
                 }
               }
             }
@@ -442,6 +468,7 @@ var parseTimeObject = {
 
 
 parseTimeObject.words.de = {
+  currently: ['jetzt'],
   numbers: {
     'null' : 0,
     'ein' : 1,
@@ -526,7 +553,110 @@ parseTimeObject.words.de = {
 };
 
 
+parseTimeObject.words.fr = {
+  currently: ['maintenant'],
+  numbers: {
+    'zero' : 0,
+    'un' : 1,
+    'deux' : 2,
+    'trois' : 3,
+    'peu de' : 3.5,
+    'quelques' : 3.5,
+    'quatre' : 4,
+    'cinq' : 5,
+    'six' : 6,
+    'sept' : 7,
+    'huit' : 8,
+    'neuf' : 9,
+    'dix' : 10,
+    'onze' : 11,
+    'douze' : 12,
+    'treize' : 13,
+    'quatorze' : 14,
+    'quinze' : 15,
+    'seize' : 16,
+    'dix-sept' : 17,
+    'dix-huit' : 18,
+    'dix-neuf' : 19,
+    'vingt' : 20,
+    'trente' : 30,
+    'quarante' : 40,
+    'cinquante' : 50,
+    'soixante' : 60,
+    'soixante-dix' : 70,
+    'quatre-vingt' : 80,
+    'quatre-vingt-dix' : 90,
+    'cent' : 100,
+    'mille' : 1000,
+    'million' : 1000000
+  },
+  unit: {
+    'milliseconde' : 1,
+    'seconde' : 1000,
+    'minute' : 60000,
+    'heure' : 3600000,
+    'jour' : 86400000,
+    'semaine' : 604800000,
+    'mois' : 2592000000,
+    'trimestre' : 7776000000,
+    'an' : 31536000000,
+    'décénie' : 315360000000
+  },
+  countable: {
+    'avant hier' : -172800000,
+    'hier' : -86400000,
+    'aujourd\'hui' : 1,
+    'ajd' : 1,
+    'après demain' : 172800000,
+    'demain' : 86400000,
+    'dans une semaine' : 604800000,
+    'la semaine prochaine' : 604800000,
+    'la semaine dernière' : -604800000,
+    'la semaine passée' : -604800000
+  },
+  month: {
+    'jan' : '01',
+    'fev' : '02',
+    'mar' : '03',
+    'avr' : '04',
+    'mai' : '05',
+    'juin' : '06',
+    'juil' : '07',
+    'aou' : '08',
+    'sep' : '09',
+    'oct' : '10',
+    'nov' : '11',
+    'dec' : '12'
+  },
+  daytime: {
+    'aube': '04:00',
+    'matin': '06:00',
+    'après-midi': '15:00',
+    'aprèm': '15:00',
+    'midi': '12:00',
+    'goûter': '17:00',
+    'quattre-heure': '16:00',
+    'debut de soirée': '17:00',
+    'soirée': '19:00',
+    'repas': '20:00',
+    'minuit': '24:00',
+    'nuit': '22:00'
+  },
+  fillwords: {
+    'il y a' : '-',
+    'dans' : '+'
+  },
+  fillfoo: {
+    's' : '',
+    '\\-' : '',
+    '\\ ' : '',
+    '\\.' : ''
+  }
+};
+
+
 parseTimeObject.words.pt = {
+  currently : ['agora'],
   numbers: {
     'zero' : 0,
     'e meio' : 0.5,
