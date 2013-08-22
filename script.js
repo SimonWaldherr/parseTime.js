@@ -14,6 +14,7 @@ window.onload = function () {
 
   for (i = 0; i < eles.length; i += 1) {
     retvalue = parseTime(eles[i].textContent);
+    eles[i].innerHTML = '<i></i>' + eles[i].innerHTML;
     if ((retvalue !== undefined) && (retvalue.absolute !== false)) {
       ldate = new Date(retvalue.absolute).toLocaleDateString();
       ltime = new Date(retvalue.absolute).toLocaleTimeString();

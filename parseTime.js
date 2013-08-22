@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.3  *
+ *  Version 0.2.5  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -118,12 +118,18 @@ var parseTimeObject = {
     pbint,
     unit,
     word,
+    val,
     hhmmss,
     tzoffset,
+    word_for_now,
+    cur_lang,
+    implicit_date,
     ddmmyyyy = {},
     dateO = {},
     adWordsToRegex = function (fillfoo, first) {
-      var returnval = '', i;
+      var returnval = '',
+        i;
+
       for (i in parseTimeObject.words[lang][fillfoo]) {
         if (parseTimeObject.words[lang][fillfoo][i] !== undefined) {
           if (first === false) {
@@ -137,7 +143,11 @@ var parseTimeObject = {
       return returnval;
     },
     objectKeyInString = function (obj, str) {
-      var i, ret = {}, retbool, keys = Object.keys(obj);
+      var i,
+        ret = {},
+        retbool,
+        keys = Object.keys(obj);
+
       for (i = 0; i < keys.length; i += 1) {
         if (string.indexOf(keys[i]) !== -1) {
           ret[keys[i]] = string.indexOf(keys[i]);
@@ -158,27 +168,28 @@ var parseTimeObject = {
   string = string.toLowerCase().replace(/["'<>\(\)]/gm, '').replace(/(\d)([A-Za-z])/, "$1 $2", "gm");
   now = parseInt(now, 10);
 
-  for (var lang in parseTimeObject.words) {
-      var cur_lang = parseTimeObject.words[lang];
-      for (var implicit_date in cur_lang.countable) {
-          if (string == implicit_date) {
-              var val = cur_lang.countable[implicit_date];
-              if (val > 0) {
-                  string = 'in '+ (val/100) + ' seconds';
-              } else {
-                  string = '' + (val/100) + ' seconds ago';
-              }
-          }
+  for (lang in parseTimeObject.words) {
+    cur_lang = parseTimeObject.words[lang];
+    for (implicit_date in cur_lang.countable) {
+      if (string === implicit_date) {
+        val = cur_lang.countable[implicit_date];
+        if (val > 0) {
+          string = 'in ' + (val / 100) + ' seconds';
+        } else {
+          string = (val / 100) + ' seconds ago';
+        }
       }
-      for (var word_for_now in cur_lang.currently) {
-          if (string === cur_lang.currently[word_for_now])
-              return {
-                  'absolute': Date.now(),
-                      'relative': 0,
-                      'mode': 'now',
-                      'pb': 1
-              };
+    }
+    for (word_for_now in cur_lang.currently) {
+      if (string === cur_lang.currently[word_for_now]) {
+        return {
+          'absolute': Date.now(),
+          'relative': 0,
+          'mode': 'now',
+          'pb': 1
+        };
       }
+    }
   }
   dateO.parsed = new Date();
   dateO.parsed = new Date(Date.parse(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm")));
@@ -293,7 +304,6 @@ var parseTimeObject = {
                   dateO.minute = hhmmss.split(':')[1];
                   dateO.second = '00';
                   pbint = 7;
-                  console.log([dateO,hhmmss]);
                 }
               }
             }
