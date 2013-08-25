@@ -12,6 +12,10 @@ var parseTimeObject = {
   words: {
     en: {
       currently: ['now'],
+      clockwords: [
+        'oclock',
+        'o\'clock'
+      ],
       numbers: {
         'zero' : 0,
         'one' : 1,
@@ -120,10 +124,13 @@ var parseTimeObject = {
     word,
     val,
     hhmmss,
+    hhmmss2,
     tzoffset,
+    timeregex,
     word_for_now,
     cur_lang,
     implicit_date,
+    clockwords = '', 
     ddmmyyyy = {},
     dateO = {},
     adWordsToRegex = function (fillfoo, first) {
@@ -211,7 +218,16 @@ var parseTimeObject = {
     };
   }
 
-  hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d) (\d\d):(\d\d):(\d\d))/.exec(string);
+  for (lang in parseTimeObject.words) {
+    if (clockwords !== '') {
+      clockwords += '|';
+    }
+    clockwords += ' ' + parseTimeObject.words[lang].clockwords.join('| ');
+  }
+
+  timeregex = new RegExp('((\\S+\\s){0,4}(\\d{1,2})((:(\\d{1,2})(:(\\d{1,2})(\\.(\\d{1,4}))?)?)|(' + clockwords + ')))');
+
+  hhmmss = /((\d\d)\.(\d\d)\.(\d\d\d\d)[ \D]+(\d\d(:\d\d(:\d\d)?)?(\s\S+)?))/.exec(string);
   // [0]  : full
   // [1]  : full
   // [2]  : day
@@ -221,15 +237,22 @@ var parseTimeObject = {
   // [6]  : minute
   // [7]  : second
   if (hhmmss !== null) {
+    hhmmss2 =  timeregex.exec(hhmmss[5]) || hhmmss;
     dateO.day = hhmmss[2].length === 1 ? '0' + hhmmss[2] : hhmmss[2];
     dateO.month = hhmmss[3].length === 1 ? '0' + hhmmss[3] : hhmmss[3];
     dateO.year = hhmmss[4].length === 2 ? '20' + hhmmss[4] : hhmmss[4];
+    dateO.hour = hhmmss2[3] === undefined ? '12' : hhmmss2[3].length === 1 ? '0' + hhmmss2[3] : hhmmss2[3];
+    dateO.minute = hhmmss2[6] === undefined ? '00' : hhmmss2[6].length === 1 ? '0' + hhmmss2[6] : hhmmss2[6];
+    dateO.second = hhmmss2[7] === undefined ? '00' : hhmmss2[7].length === 1 ? '0' + hhmmss2[7] : hhmmss2[7];
+    dateO.second = dateO.second.replace(':', '');
+    /*
     dateO.hour = hhmmss[5].length === 1 ? '0' + hhmmss[5] : hhmmss[5];
     dateO.minute = hhmmss[6].length === 1 ? '0' + hhmmss[6] : hhmmss[6];
     dateO.second = hhmmss[7].length === 1 ? '0' + hhmmss[7] : hhmmss[7];
+    */
     pbint = 3;
   } else {
-    hhmmss = /((\S+\s){0,4}(\d{1,2})((:(\d{1,2})(:(\d{1,2})(\.(\d{1,4}))?)?)|( uhr| oclock)))/.exec(string);
+    hhmmss = timeregex.exec(string);
     // [0]  : full
     // [1]  : full
     // [2]  : countable (yesterday)
