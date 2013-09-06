@@ -1,12 +1,12 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.5  *
+ *  Version 0.2.6  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
 
-/*jslint browser: true, indent: 2 */
-/*exported parseTime              */
+/*jslint browser: true, indent: 2, forin: true */
+/*exported parseTime */
 
 var parseTimeObject = {
   words: {
@@ -130,7 +130,7 @@ var parseTimeObject = {
     word_for_now,
     cur_lang,
     implicit_date,
-    clockwords = '', 
+    clockwords = '',
     ddmmyyyy = {},
     dateO = {},
     adWordsToRegex = function (fillfoo, first) {
@@ -156,8 +156,8 @@ var parseTimeObject = {
         keys = Object.keys(obj);
 
       for (i = 0; i < keys.length; i += 1) {
-        if (string.indexOf(keys[i]) !== -1) {
-          ret[keys[i]] = string.indexOf(keys[i]);
+        if (str.indexOf(keys[i]) !== -1) {
+          ret[keys[i]] = str.indexOf(keys[i]);
           retbool = true;
         }
       }
@@ -176,25 +176,27 @@ var parseTimeObject = {
   now = parseInt(now, 10);
 
   for (lang in parseTimeObject.words) {
-    cur_lang = parseTimeObject.words[lang];
-    for (implicit_date in cur_lang.countable) {
-      if (string === implicit_date) {
-        val = cur_lang.countable[implicit_date];
-        if (val > 0) {
-          string = 'in ' + (val / 100) + ' seconds';
-        } else {
-          string = (val / 100) + ' seconds ago';
+    if (parseTimeObject.words.length !== 0) {
+      cur_lang = parseTimeObject.words[lang];
+      for (implicit_date in cur_lang.countable) {
+        if (string === implicit_date) {
+          val = cur_lang.countable[implicit_date];
+          if (val > 0) {
+            string = 'in ' + (val / 100) + ' seconds';
+          } else {
+            string = (val / 100) + ' seconds ago';
+          }
         }
       }
-    }
-    for (word_for_now in cur_lang.currently) {
-      if (string === cur_lang.currently[word_for_now]) {
-        return {
-          'absolute': Date.now(),
-          'relative': 0,
-          'mode': 'now',
-          'pb': 1
-        };
+      for (word_for_now in cur_lang.currently) {
+        if (string === cur_lang.currently[word_for_now]) {
+          return {
+            'absolute': Date.now(),
+            'relative': 0,
+            'mode': 'now',
+            'pb': 1
+          };
+        }
       }
     }
   }
@@ -245,11 +247,6 @@ var parseTimeObject = {
     dateO.minute = hhmmss2[6] === undefined ? '00' : hhmmss2[6].length === 1 ? '0' + hhmmss2[6] : hhmmss2[6];
     dateO.second = hhmmss2[7] === undefined ? '00' : hhmmss2[7].length === 1 ? '0' + hhmmss2[7] : hhmmss2[7];
     dateO.second = dateO.second.replace(':', '');
-    /*
-    dateO.hour = hhmmss[5].length === 1 ? '0' + hhmmss[5] : hhmmss[5];
-    dateO.minute = hhmmss[6].length === 1 ? '0' + hhmmss[6] : hhmmss[6];
-    dateO.second = hhmmss[7].length === 1 ? '0' + hhmmss[7] : hhmmss[7];
-    */
     pbint = 3;
   } else {
     hhmmss = timeregex.exec(string);

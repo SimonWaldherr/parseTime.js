@@ -1,8 +1,8 @@
 {
-  "name": "parseTime",
+  "name": "parsetime",
   "title": "parseTime.js",
-  "description": "convert strings like 'five days ago' to an integer (with time in seconds)",
-  "version": "0.2.5",
+  "description": "convert strings like 'five days ago' (in english, german, french or portuguese) to an integer (with time in seconds)",
+  "version": "0.2.6",
   "homepage": "https://github.com/SimonWaldherr/parseTime.js",
   "author": {
     "name": "Simon Waldherr",
@@ -42,3 +42,5 @@
     "strings"
   ]
 }
+
+        

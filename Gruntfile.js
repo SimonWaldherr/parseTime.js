@@ -26,7 +26,7 @@ module.exports = function(grunt) {
       options: {
         banner: '/* * * * * * * * * *\n' +
                 ' *  parseTime .js  *\n' +
-                ' *  Version 0.2.5  *\n' +
+                ' *  Version 0.2.6  *\n' +
                 ' *  License:  MIT  *\n' +
                 ' * Simon  Waldherr *\n' +
                 ' * * * * * * * * * */\n\n',
