@@ -6,7 +6,7 @@ parseTimeObject.words.pt = {
     'e meio' : 0.5,
     'um' : 1,
     'dois' : 2,
-    'tr&ecirc;s' : 3,
+    'tr%C3%AAs' : 3,
     'poucos' : 3.5,
     'alguns' : 3.5,
     'quatro' : 4,
@@ -35,7 +35,7 @@ parseTimeObject.words.pt = {
     'noventa' : 90,
     'cem' : 100,
     'mil' : 1000,
-    'milh&atilde;o' : 1000000
+    'milh%C3%A3o' : 1000000
   },
   unit: {
     'milissegundo' : 1,
@@ -44,19 +44,19 @@ parseTimeObject.words.pt = {
     'hora' : 3600000,
     'dia' : 86400000,
     'semana' : 604800000,
-    'm&ecirc;s' : 2592000000,
+    'm%C3%AAs' : 2592000000,
     'trimestre' : 7776000000,
     'ano' : 31536000000,
-    'd&eacute;cada' : 315360000000
+    'd%C3%A9cada' : 315360000000
   },
   countable: {
-    'antes de ontem' : -172800000,
-    'ontem' : -86400000,
+    'antes de ontem' : -17280000,
+    'ontem' : -8640000,
     'hoje' : 1,
-    'depois de amanh&atilde;' : 172800000,
-    'amanh&atilde;' : 86400000,
-    'em uma semana' : 604800000,
-    '&uacute;ltima semana' : -604800000
+    'depois de amanh%C3%A3' : 17280000,
+    'amanh%C3%A3' : 8640000,
+    'em uma semana' : 60480000,
+    '%C3%BAltima semana' : -60480000
   },
   month: {
     'jan'   : '01',
@@ -74,16 +74,16 @@ parseTimeObject.words.pt = {
   },
   daytime: {
     'madrugada': '04:00',
-    'manh&atilde;': '06:00',
+    'manh%C3%A3': '06:00',
     'tarde': '15:00',
     'meio-dia': '12:00',
-    'pr&eacute;-noite': '17:00',
-    'crep&uacute;sculo': '20:00',
+    'pr%C3%A9-noite': '17:00',
+    'crep%C3%BAsculo': '20:00',
     'meia-noite': '24:00',
     'noite': '22:00'
   },
   fillwords: {
-    'atr&aacute;s' : '-',
+    'atr%C3%A1s' : '-',
     'em' : '+'
   },
   fillfoo: {

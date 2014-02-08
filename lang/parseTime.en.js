@@ -52,13 +52,13 @@ parseTimeObject.words.en = {
     'decade' : 315360000000
   },
   countable: {
-    'before yesterday' : -172800000,
-    'yesterday' : -86400000,
+    'before yesterday' : -17280000,
+    'yesterday' : -8640000,
     'today' : 1,
-    'day after tomorrow' : 172800000,
-    'tomorrow' : 86400000,
-    'in a week' : 604800000,
-    'last week' : -604800000
+    'day after tomorrow' : 17280000,
+    'tomorrow' : 8640000,
+    'in a week' : 60480000,
+    'last week' : -60480000
   },
   month: {
     'jan' : '01',

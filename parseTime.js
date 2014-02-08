@@ -1,6 +1,6 @@
 /* * * * * * * * * *
  *  parseTime .js  *
- *  Version 0.2.6  *
+ *  Version 0.2.7  *
  *  License:  MIT  *
  * Simon  Waldherr *
  * * * * * * * * * */
@@ -64,13 +64,13 @@ var parseTimeObject = {
         'decade' : 315360000000
       },
       countable: {
-        'before yesterday' : -172800000,
-        'yesterday' : -86400000,
+        'before yesterday' : -17280000,
+        'yesterday' : -8640000,
         'today' : 1,
-        'day after tomorrow' : 172800000,
-        'tomorrow' : 86400000,
-        'in a week' : 604800000,
-        'last week' : -604800000
+        'day after tomorrow' : 17280000,
+        'tomorrow' : 8640000,
+        'in a week' : 60480000,
+        'last week' : -60480000
       },
       month: {
         'jan' : '01',
@@ -173,6 +173,8 @@ var parseTimeObject = {
     now = now.getTime();
   }
   string = string.toLowerCase().replace(/["'<>\(\)]/gm, '').replace(/(\d)([A-Za-z])/, "$1 $2", "gm");
+  string = string.replace(/([^\x00-\x7F])/gm, encodeURIComponent);
+
   now = parseInt(now, 10);
 
   for (lang in parseTimeObject.words) {
@@ -283,6 +285,9 @@ var parseTimeObject = {
       }
     }
   }
+
+  string = ' ' + string + ' ';
+
   if (dateO.hour !== undefined) {
     for (lang in parseTimeObject.words) {
       if (parseTimeObject.words[lang] !== undefined) {
@@ -376,7 +381,6 @@ var parseTimeObject = {
     }
   }
 
-  string = ' ' + string + ' ';
   for (lang in parseTimeObject.words) {
     if (parseTimeObject.words[lang] !== undefined) {
       parseTimeObject.regexes[lang] = '((';
