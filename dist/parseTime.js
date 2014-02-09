@@ -587,7 +587,7 @@ parseTimeObject.words.fr = {
     'heures'
   ],
   numbers: {
-    'zero' : 0,
+    'z%C3%A9ro' : 0,
     'un' : 1,
     'deux' : 2,
     'trois' : 3,
@@ -631,14 +631,14 @@ parseTimeObject.words.fr = {
     'mois' : 2592000000,
     'trimestre' : 7776000000,
     'an' : 31536000000,
-    'd%C3%A9c%C3%A9nie' : 315360000000
+    'd%C3%A9cennie' : 315360000000
   },
   countable: {
-    'avant hier' : -17280000,
+    'avant-hier' : -17280000,
     'hier' : -8640000,
     'aujourd\'hui' : 1,
     'ajd' : 1,
-    'apr%C3%A8s demain' : 17280000,
+    'apr%C3%A8s-demain' : 17280000,
     'demain' : 8640000,
     'dans une semaine' : 60480000,
     'la semaine prochaine' : 60480000,
@@ -666,8 +666,8 @@ parseTimeObject.words.fr = {
     'apr%C3%A8m': '15:00',
     'midi': '12:00',
     'go%C3%BBter': '17:00',
-    'quattre-heure': '16:00',
-    'debut de soir%C3%A9e': '17:00',
+    'quatre-heure': '16:00',
+    'd%C3%A9but de soir%C3%A9e': '17:00',
     'soir%C3%A9e': '19:00',
     'repas': '20:00',
     'minuit': '24:00',
