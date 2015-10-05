@@ -1,13 +1,15 @@
-#parseTime.js
+# parseTime.js
 
 convert strings like "five days ago" to an integer (with time in milliseconds (as relative value from now and as UNIX Timestamp)) in three languages (en, de, pt)  
 *coders who like parseTime.js maybe also like [disTime.js](https://github.com/SimonWaldherr/disTime.js)*  
 
-##about
+## about
 
 License:   MIT  
 Version: 0.2.8  
 Date:  10.2015  
+
+[![Build Status](https://travis-ci.org/SimonWaldherr/parseTime.js.svg?branch=master)](https://travis-ci.org/SimonWaldherr/parseTime.js)  
 
 ## Installation
 
@@ -15,11 +17,11 @@ Date:  10.2015
 npm install parsetime
 ```
 
-##demo
+## demo
 
 Test this code on the associated github page [simonwaldherr.github.com/parseTime.js/](http://simonwaldherr.github.com/parseTime.js/).  
 
-##version
+## version
 
 * 0.2.8) make it node compatible and add CI tests
 * 0.2.7) language changes
@@ -41,10 +43,10 @@ Test this code on the associated github page [simonwaldherr.github.com/parseTime
 * 0.1.1) beautified
 * 0.1.0) Init Commit
 
-##feature request
+## feature request
 
 you can [request more features and date format types with the github issue tracker](https://github.com/SimonWaldherr/parseTime.js/issues).  
 
-##contact
+## contact
 
 Feel free to contact me via [eMail](mailto:contact@simonwaldherr.de), on [App.net](https://alpha.app.net/simonwaldherr) or on [Twitter](http://twitter.com/simonwaldherr). This software will be continually developed. Suggestions and tips are always welcome.  
