@@ -63,28 +63,32 @@ body {
   padding-bottom: 5px;
 }
 
-.enLang i, .deLang i, .frLang i, .ptLang i {
+.enLang i, .deLang i, .frLang i, .ptLang i, .lvLang i {
   display: block;
   height: 19px;
   width: 30px;
   background-image: url('./flags.png');
-  background-size: 300px;
+  background-size: 330px;
 }
 
 .enLang i {
-  background-position: 180px 0px;
+  background-position: 210px 0px;
 }
 
 .deLang i {
-  background-position: 120px 0px;
+  background-position: 150px 0px;
 }
 
 .frLang i {
-  background-position: 30px 0px;
+  background-position: 60px 0px;
 }
 
 .ptLang i {
-  background-position: 210px 0px;
+  background-position: 240px 0px;
+}
+
+.lvLang i {
+  background-position: 30px 0px;
 }
 
 @media only screen and
