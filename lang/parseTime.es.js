@@ -1,5 +1,5 @@
-parseTimeObject.words.en = {
-  currently: ['now'],
+parseTimeObject.words.es = {
+  currently: ['ahora', 'en este momento'],
   clockwords: [
     'en punto'
   ],
