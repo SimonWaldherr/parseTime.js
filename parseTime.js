@@ -48,7 +48,7 @@ var parseTimeObject = {
         'eighty' : 80,
         'ninety' : 90,
         'hundred' : 100,
-        'thousend' : 1000,
+        'thousand' : 1000,
         'million' : 1000000
       },
       unit: {
