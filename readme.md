@@ -6,8 +6,8 @@ convert strings like "five days ago" to an integer (with time in milliseconds (a
 ## about
 
 License:   MIT  
-Version: 0.2.9  
-Date:  10.2015  
+Version: 0.2.10  
+Date:  10.2018  
 
 [![Build Status](https://travis-ci.org/SimonWaldherr/parseTime.js.svg?branch=master)](https://travis-ci.org/SimonWaldherr/parseTime.js)  
 
@@ -43,6 +43,7 @@ Test this code on the associated github page [simonwaldherr.github.com/parseTime
 
 ## version
 
+* 0.2.10) fixes #24 - prioritise dd/mm/yy over mm/dd/yy (don't use Date.parse() for that)
 * 0.2.9) auto deploy to npm via travis and add example to readme
 * 0.2.8) make it node compatible and add CI tests
 * 0.2.7) language changes
