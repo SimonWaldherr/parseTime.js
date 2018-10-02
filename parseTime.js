@@ -48,7 +48,7 @@ var parseTimeObject = {
         'eighty' : 80,
         'ninety' : 90,
         'hundred' : 100,
-        'thousend' : 1000,
+        'thousand' : 1000,
         'million' : 1000000
       },
       unit: {
@@ -176,6 +176,32 @@ var parseTimeObject = {
   string = string.replace(/([^\x00-\x7F])/gm, encodeURIComponent);
 
   now = parseInt(now, 10);
+
+  for (lang in parseTimeObject.words) {
+    if (parseTimeObject.words.length !== 0) {
+      cur_lang = parseTimeObject.words[lang];
+      for (implicit_date in cur_lang.countable) {
+        if (string === implicit_date) {
+          val = cur_lang.countable[implicit_date];
+          if (val > 0) {
+            string = 'in ' + (val / 100) + ' seconds';
+          } else {
+            string = (val / 100) + ' seconds ago';
+          }
+        }
+      }
+      for (word_for_now in cur_lang.currently) {
+        if (string === cur_lang.currently[word_for_now]) {
+          return {
+            'absolute': Date.now(),
+            'relative': 0,
+            'mode': 'now',
+            'pb': 1
+          };
+        }
+      }
+    }
+  }
 
   for (lang in parseTimeObject.words) {
     if (clockwords !== '') {
@@ -406,14 +432,18 @@ var parseTimeObject = {
       }
     }
   }
-  ddmmyyyy.match = /(\d\d?)[,\.](\d\d?)[,\.](\d\d(\d\d)?)/.exec(string);
+  ddmmyyyy.match = /(\d\d?)[,\/\-\.](\d\d?)[,\/\-\.](\d\d(\d\d)?)/.exec(string);
   if (ddmmyyyy.match !== null) {
     ddmmyyyy.day = ddmmyyyy.match[1];
     ddmmyyyy.month = ddmmyyyy.match[2];
     ddmmyyyy.year = ddmmyyyy.match[3];
+    if (ddmmyyyy.month < 1 || ddmmyyyy.month > 12) {
+        ddmmyyyy.day = ddmmyyyy.match[2];
+        ddmmyyyy.month = ddmmyyyy.match[1];
+    }
     pbint = 10;
   } else {
-    ddmmyyyy.match = /(\d\d(\d\d)?)[\/\-](\d\d?)[\/\-](\d\d?)/.exec(string);
+    ddmmyyyy.match = /(\d\d(\d\d)?)[,\/\-\.](\d\d?)[,\/\-\.](\d\d?)/.exec(string);
     if (ddmmyyyy.match !== null) {
       ddmmyyyy.day = ddmmyyyy.match[4];
       ddmmyyyy.month = ddmmyyyy.match[3];
@@ -464,6 +494,26 @@ var parseTimeObject = {
   }
   dateO.parsed = new Date();
   dateO.parsed = new Date(Date.parse(string.replace(/((\d{1,2})(st |th |rd |ter ))/, "$2 ", "gm")));
+  if (!isNaN(dateO.parsed)) {
+    if (string.indexOf(dateO.parsed.getFullYear()) === -1) {
+      dateO.now = new Date();
+      dateO.now = Date.parse(now);
+      if (!isNaN(dateO.now)) {
+        dateO.parsed.setFullYear(dateO.now.getFullYear());
+        dateO.parsed.setTime(dateO.parsed.getTime() + 86400000);
+      }
+    }
+    dateO.parsed = dateO.parsed.getTime();
+    return {
+      'absolute': dateO.parsed,
+      'relative': (dateO.parsed - now),
+      'mode': 'absolute',
+      'pb': 2
+    };
+  }
+
+  // Last resort fallback to JS Date.parse()
+  dateO.parsed = new Date(Date.parse(string.replace(/((\d{1,2})(th |rd |ter ))/, "$2 ", "gm")));
   if (!isNaN(dateO.parsed)) {
     if (string.indexOf(dateO.parsed.getFullYear()) === -1) {
       dateO.now = new Date();
