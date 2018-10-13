@@ -7,7 +7,7 @@ process.env.TZ = 'Europe/Berlin';
 
 tests = [
     {'name': 'yesterday', 'input': 'yesterday', 'mode':'relative', 'output': -86400000},
-    {'name': 'birthday', 'input': '06.06.1989', 'mode':'absolute', 'output': 613087200000},
+    {'name': 'birthday', 'input': '06.06.1989', 'mode':'absolute', 'output': 613134000000},
     {'name': '4thofjuly', 'input': 'am 4 Juli 2014', 'mode':'absolute', 'output': 1404424800000},
     {'name': 'tomorrow', 'input': 'tomorrow', 'mode':'relative', 'output': 86400000}
 ];
