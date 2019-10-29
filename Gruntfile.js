@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         separator: '\n\n'
       },
       dist: {
-        src: ['./parseTime.js', 'lang/parseTime.de.js', 'lang/parseTime.fr.js', 'lang/parseTime.pt.js'],
+        src: ['./parseTime.js', 'lang/parseTime.de.js', 'lang/parseTime.fr.js', 'lang/parseTime.pt.js', 'lang/parseTime.tr.js'],
         dest: './dist/parseTime.js'
       }
     },
