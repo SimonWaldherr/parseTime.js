@@ -39,7 +39,7 @@ console.log(timestamp['absolute']); // returns 613087200000
 
 ## demo
 
-Test this code on the associated github page [simonwaldherr.github.com/parseTime.js/](http://simonwaldherr.github.com/parseTime.js/).  
+Test this code on the associated github page [simonwaldherr.github.io/parseTime.js/](https://simonwaldherr.github.io/parseTime.js/).  
 
 ## version
 
