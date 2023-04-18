@@ -9,8 +9,6 @@ License:   MIT
 Version: 0.2.10  
 Date:  10.2018  
 
-[![Build Status](https://travis-ci.org/SimonWaldherr/parseTime.js.svg?branch=master)](https://travis-ci.org/SimonWaldherr/parseTime.js)  
-
 ## install
 
 ```sh
